@@ -62,7 +62,6 @@ function Booking() {
               </DialogHeader>
               <Form />
               <DialogFooter>
-                <Button type="submit">Save</Button>
                 <Button onClick={closeModal}>Close</Button>
               </DialogFooter>
             </DialogContent>
