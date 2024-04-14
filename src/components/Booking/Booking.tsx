@@ -2,6 +2,18 @@ import React, { useState } from "react";
 import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css";
 import Form from "../Form/Form";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Button } from "@/components/ui/button";
 
 type ValuePiece = Date | null;
 
@@ -21,14 +33,40 @@ function Booking() {
     setShowModal(false);
   };
 
+  const tileContent = ({ date, view }: { date: Date; view: string }) => {
+    if (view === "month" && date.getDay() === 0) {
+      return <p>*</p>;
+    }
+    return null;
+  };
+
   return (
     <div>
-      <Calendar value={value} onChange={handleDateChange} />
+      <Calendar
+        tileContent={tileContent}
+        value={value}
+        onChange={handleDateChange}
+      />
       {showModal && (
         <div className="modal">
-          <h2>Selected Date: {selectedDate?.toString()}</h2>
-          <Form />
-          <button onClick={closeModal}>Close</button>
+          <Dialog>
+            <DialogTrigger asChild>
+              <Button variant="outline">Add Event</Button>
+            </DialogTrigger>
+            <DialogContent className="sm:max-w-[425px]">
+              <DialogHeader>
+                <DialogTitle>Add Event</DialogTitle>
+                <DialogDescription>
+                  Add events to your calender here.
+                </DialogDescription>
+              </DialogHeader>
+              <Form />
+              <DialogFooter>
+                <Button type="submit">Save</Button>
+                <Button onClick={closeModal}>Close</Button>
+              </DialogFooter>
+            </DialogContent>
+          </Dialog>
         </div>
       )}
     </div>
