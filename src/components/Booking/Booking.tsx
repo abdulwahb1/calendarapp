@@ -33,26 +33,22 @@ export default function Booking() {
   const [showModal, setShowModal] = useState(false);
   const [isEvent, setEvent] = useState<string>("");
   const [isRem, setRem] = useState<string>("");
-  const [isEventName, setEventName] = useState([""]);
+  const [isEventDate, setEventDate] = useState([""] as string[]);
 
-  const fetchEvent = async () => {
-    const { data, error } = await supabase
-      .from("calendar")
-      .select("event_name");
+  const fetchDate = async () => {
+    const { data, error } = await supabase.from("calendar").select("date");
 
     if (error) {
       alert(JSON.stringify(error));
     } else {
-      const eventdata = data.map((item) => item.event_name);
-      setEventName(eventdata);
+      const eventdate = data.map((item) => item.date);
+      setEventDate(eventdate);
     }
   };
 
   useEffect(() => {
-    fetchEvent();
+    fetchDate();
   }, []);
-
-  console.log(isEventName);
 
   const handleSubmission = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
