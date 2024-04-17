@@ -46,6 +46,18 @@ export default function Booking() {
     }
   };
 
+  const tileContent = ({ date, view }: { date: Date; view: string }) => {
+    // Convert the date to ISO string and remove the time part
+    const dateString = date.toISOString().split("T")[0];
+
+    // Convert the date-time strings in isEventDate to date strings
+    const dateStrings = isEventDate.map((dateTime) => dateTime.split("T")[0]);
+
+    if (view === "month" && dateStrings.includes(dateString)) {
+      return <p>*</p>;
+    }
+  };
+
   useEffect(() => {
     fetchDate();
   }, []);
@@ -62,6 +74,8 @@ export default function Booking() {
       alert(JSON.stringify(error));
     } else {
       setEvent("");
+      closeModal();
+      fetchDate();
     }
   };
 
@@ -73,13 +87,6 @@ export default function Booking() {
 
   const closeModal = () => {
     setShowModal(false);
-  };
-
-  const tileContent = ({ date, view }: { date: Date; view: string }) => {
-    if (view === "month" && date.getDay() === 0) {
-      return <p>*</p>;
-    }
-    return null;
   };
 
   return (
