@@ -32,12 +32,12 @@ type EventDetailType = { date: string; name: string };
 export default function Booking() {
   const [value, onChange] = useState<Value>(new Date());
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
-  const [showModal, setShowModal] = useState(false);
+  const [showModal, setShowModal] = useState<boolean>(false);
   const [isEvent, setEvent] = useState<string>("");
   const [isRem, setRem] = useState<string>("");
   const [isEventDate, setEventDate] = useState([""] as string[]);
   const [eventDetail, setEventDetail] = useState<EventDetailType[]>([]);
-  const [showEvent, setShowEvent] = useState(false);
+  const [showEvent, setShowEvent] = useState<boolean>(false);
 
   const fetchDate = async () => {
     const { data, error } = await supabase.from("calendar").select("date");
@@ -142,17 +142,16 @@ export default function Booking() {
       />
       <h2>Selected Date: {selectedDate?.toString()}</h2>
       <div>
-        <h2>Events</h2>
         <div>
-          <Button onClick={closeEvent} variant="outline">
+          {/* <Button onClick={closeEvent} variant="outline">
             Close Event
-          </Button>
+          </Button> */}
         </div>
-        {showEvent && (
+        {/* {showEvent && (
           <div>
             <EventView date={selectedDate} view="month" />
           </div>
-        )}
+        )} */}
       </div>
       {showModal && (
         <div className="modal">
@@ -160,6 +159,10 @@ export default function Booking() {
             <DialogTrigger asChild>
               <Button variant="outline">Add Event</Button>
             </DialogTrigger>
+            <h2>Events</h2>
+            <div>
+              <EventView date={selectedDate} view="month" />
+            </div>
             <DialogContent className="sm:max-w-[425px]">
               <DialogHeader>
                 <DialogTitle>Add Event</DialogTitle>
