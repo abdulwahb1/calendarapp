@@ -64,16 +64,16 @@ export default function Booking() {
     }
   };
 
-  const EventView = ({ date, view }: { date: Date; view: string }) => {
+  const EventView = ({ date, view }: { date: Date | null; view: string }) => {
     // Convert the date to ISO string and remove the time part
-    const dateString = date.toISOString().split("T")[0];
+    const dateString = selectedDate?.toISOString().split("T")[0];
 
     const event = eventDetail.find((item) => item.date === dateString);
 
     if (view === "month" && event) {
       return (
         <div className="text-center">
-          <span className="text-sm">{event.name}</span>
+          <span className="text-2xl">{event.name}</span>
         </div>
       );
     }
@@ -114,6 +114,7 @@ export default function Booking() {
       setEvent("");
       closeModal();
       fetchDate();
+      fetchEvent();
     }
   };
 
