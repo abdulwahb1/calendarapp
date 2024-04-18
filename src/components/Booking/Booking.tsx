@@ -27,6 +27,8 @@ type ValuePiece = Date | null;
 
 type Value = ValuePiece | [ValuePiece, ValuePiece];
 
+type EventDetailType = { date: string; name: string };
+
 export default function Booking() {
   const [value, onChange] = useState<Value>(new Date());
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
@@ -34,7 +36,7 @@ export default function Booking() {
   const [isEvent, setEvent] = useState<string>("");
   const [isRem, setRem] = useState<string>("");
   const [isEventDate, setEventDate] = useState([""] as string[]);
-  const [eventDetail, setEventDetail] = useState([""]);
+  const [eventDetail, setEventDetail] = useState<EventDetailType[]>([]);
 
   const fetchDate = async () => {
     const { data, error } = await supabase.from("calendar").select("date");
@@ -47,16 +49,18 @@ export default function Booking() {
     }
   };
 
-  const eventDetails = async () => {
-    const { data, error } = await supabase
-      .from("calendar")
-      .select("event_name");
+  const fetchEvent = async () => {
+    const { data, error } = await supabase.from("calendar").select("*");
 
     if (error) {
       alert(JSON.stringify(error));
     } else {
-      const fetchedEventName = data.map((item) => item.event_name); // Extract the event_name property from each item
-      setEventDetail(fetchedEventName); // Set the extracted event names as the state value for eventDetail
+      const eventDetail = data.map((item) => ({
+        date: item.date.split("T")[0],
+        name: item.event_name,
+      }));
+
+      setEventDetail(eventDetail);
     }
   };
 
@@ -64,15 +68,12 @@ export default function Booking() {
     // Convert the date to ISO string and remove the time part
     const dateString = date.toISOString().split("T")[0];
 
-    // Convert the date-time strings in isEventDate to date strings
-    const dateStrings = isEventDate.map((dateTime) => dateTime.split("T")[0]);
+    const event = eventDetail.find((item) => item.date === dateString);
 
-    const eventName = eventDetail.map((item) => item);
-
-    if (view === "month" && dateStrings.includes(dateString)) {
+    if (view === "month" && event) {
       return (
         <div className="text-center">
-          <span className="text-sm">{eventName}</span>
+          <span className="text-sm">{event.name}</span>
         </div>
       );
     }
@@ -85,12 +86,10 @@ export default function Booking() {
     // Convert the date-time strings in isEventDate to date strings
     const dateStrings = isEventDate.map((dateTime) => dateTime.split("T")[0]);
 
-    const eventName = eventDetail.map((item) => item);
-
     if (view === "month" && dateStrings.includes(dateString)) {
       return (
         <div className="text-center">
-          <span className="text-sm">🎉 {eventName}</span>
+          <span className="text-sm">🎉</span>
         </div>
       );
     }
@@ -98,7 +97,7 @@ export default function Booking() {
 
   useEffect(() => {
     fetchDate();
-    eventDetails();
+    fetchEvent();
   }, []);
 
   const handleSubmission = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -138,6 +137,7 @@ export default function Booking() {
       <h2>Selected Date: {selectedDate?.toString()}</h2>
       <div>
         <h2>Events</h2>
+        <EventView date={new Date()} view="month" />
       </div>
       {showModal && (
         <div className="modal">
