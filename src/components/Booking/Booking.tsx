@@ -37,6 +37,7 @@ export default function Booking() {
   const [isRem, setRem] = useState<string>("");
   const [isEventDate, setEventDate] = useState([""] as string[]);
   const [eventDetail, setEventDetail] = useState<EventDetailType[]>([]);
+  const [showEvent, setShowEvent] = useState(false);
 
   const fetchDate = async () => {
     const { data, error } = await supabase.from("calendar").select("date");
@@ -128,6 +129,10 @@ export default function Booking() {
     setShowModal(false);
   };
 
+  const closeEvent = () => {
+    setShowEvent(true);
+  };
+
   return (
     <div>
       <Calendar
@@ -138,7 +143,16 @@ export default function Booking() {
       <h2>Selected Date: {selectedDate?.toString()}</h2>
       <div>
         <h2>Events</h2>
-        <EventView date={new Date()} view="month" />
+        <div>
+          <Button onClick={closeEvent} variant="outline">
+            Close Event
+          </Button>
+        </div>
+        {showEvent && (
+          <div>
+            <EventView date={selectedDate} view="month" />
+          </div>
+        )}
       </div>
       {showModal && (
         <div className="modal">
