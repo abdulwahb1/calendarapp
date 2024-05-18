@@ -1,4 +1,4 @@
-import calendar from "./Booking/Booking";
-import form from "./Login/Login";
+import Booking from "./Booking/Booking";
+import SideNavbar from "./SideNavBar/SideNavBar";
 
-export { calendar, form };
+export { Booking, SideNavbar };
