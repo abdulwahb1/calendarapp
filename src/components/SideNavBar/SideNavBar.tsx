@@ -32,7 +32,7 @@ const SideNavBar = () => {
               <div
                 className={`flex items-center justify-center min-w-[220px] min-h-16 ${
                   isActive("/BookingPage")
-                    ? "bg-[#f2f2ff] text-[#5b77fc] font-semibold"
+                    ? "bg-[#f2f2ff] text-[#496bff] font-normal"
                     : "text-gray-500"
                 }`}
               >

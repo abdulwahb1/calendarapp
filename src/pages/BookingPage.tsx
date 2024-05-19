@@ -1,5 +1,5 @@
 import React from "react";
-import { Booking, SideNavbar } from "@/components";
+import { Booking, SideNavbar, Calendar } from "@/components";
 
 const BookingPage = () => {
   return (
@@ -7,8 +7,9 @@ const BookingPage = () => {
       <div className="flex justify-center items-center">
         <SideNavbar />
       </div>
-      <div className="flex flex-col justify-center mx-auto">
-        <Booking />
+      <div className="flex">
+        {/* <Booking /> */}
+        <Calendar />
       </div>
     </section>
   );
