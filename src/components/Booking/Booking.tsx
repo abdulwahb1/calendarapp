@@ -135,12 +135,16 @@ export default function Booking() {
 
   return (
     <div>
-      <Calendar
-        tileContent={tileContent}
-        value={value}
-        onChange={handleDateChange}
-      />
-      <h2>Selected Date: {selectedDate?.toString()}</h2>
+      <div className="max-w-[500px] min-h-[350px] max-h-[350px]">
+        <Calendar
+          tileContent={tileContent}
+          value={value}
+          onChange={handleDateChange}
+        />
+        <div className="max-w-[380px]">
+          <h2>Selected Date: {selectedDate?.toString().slice(0, 15)}</h2>
+        </div>
+      </div>
       <div>
         <div>
           {/* <Button onClick={closeEvent} variant="outline">
@@ -160,7 +164,7 @@ export default function Booking() {
               <Button variant="outline">Add Event</Button>
             </DialogTrigger>
             <h2>Events</h2>
-            <div>
+            <div className="max-w-[150px] min-h-32 max-h-32">
               <EventView date={selectedDate} view="month" />
             </div>
             <DialogContent className="sm:max-w-[425px]">
